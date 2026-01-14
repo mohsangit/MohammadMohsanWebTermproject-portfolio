@@ -1,0 +1,159 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{ bio.name|default:"Portfolio" }}</title>
+
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="topbar">
+    <div class="container nav-wrap">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span class="brand-text">{{ bio.name|default:"My Portfolio" }}</span>
+      </div>
+
+      <nav class="nav">
+        <a href="#bio" class="nav-link">Bio</a>
+        <a href="#education" class="nav-link">Education</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#experience" class="nav-link">Experience & Projects</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO / BIO -->
+  <main class="container">
+    <section id="bio" class="section hero reveal">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <h1 class="title">
+            {{ bio.name|default:"Your Name" }}
+          </h1>
+          <p class="subtitle">
+            {{ bio.job_title|default:"Your Title" }}
+          </p>
+
+          <p class="about">
+            {{ bio.description|default:"Add your bio from Admin panel." }}
+          </p>
+
+          <div class="cta-row">
+            <a class="btn" href="#projects">View Projects</a>
+            <a class="btn btn-ghost" href="#contact">Contact</a>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="photo-wrap">
+            {% if bio.profile_picture %}
+              <img class="profile-img" src="{{ bio.profile_picture.url }}" alt="Profile picture">
+            {% else %}
+              <img class="profile-img" src="{% static 'assets/myphoto.jpg' %}" alt="Profile picture">
+            {% endif %}
+          </div>
+
+          <div class="info">
+            {% if bio.email %}<div class="info-line"><b>Email:</b> {{ bio.email }}</div>{% endif %}
+            {% if bio.phone %}<div class="info-line"><b>Phone:</b> {{ bio.phone }}</div>{% endif %}
+            {% if bio.linkedin %}<div class="info-line"><b>LinkedIn:</b> <a target="_blank" href="{{ bio.linkedin }}">{{ bio.linkedin }}</a></div>{% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education" class="section reveal">
+      <h2 class="section-title">Education</h2>
+      <div class="grid">
+        {% for e in education_list %}
+          <div class="card lift">
+            <div class="card-title">{{ e.title }}</div>
+            <div class="muted">{{ e.institute }}</div>
+            <div class="muted">{{ e.duration }}</div>
+          </div>
+        {% empty %}
+          <div class="card">No education added yet.</div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="section reveal">
+      <h2 class="section-title">Skills</h2>
+      <div class="chips">
+        {% for s in skills_list %}
+          <span class="chip">{{ s.name }}</span>
+        {% empty %}
+          <span class="chip">No skills added yet</span>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="section reveal">
+      <h2 class="section-title">Experience</h2>
+      <div class="stack">
+        {% for x in experience_list %}
+          <div class="card lift">
+            <div class="row">
+              <div class="card-title">{{ x.title }}</div>
+              <span class="badge">{{ x.status }}</span>
+            </div>
+            <div class="muted">{{ x.company }}</div>
+            <div class="muted">{{ x.role }}</div>
+            {% if x.details %}
+              <p class="para">{{ x.details }}</p>
+            {% endif %}
+          </div>
+        {% empty %}
+          <div class="card">No experience added yet.</div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section reveal">
+      <h2 class="section-title">Projects</h2>
+      <div class="grid">
+        {% for p in projects_list %}
+          <div class="card lift">
+            <div class="card-title">{{ p.name }}</div>
+            <p class="para">{{ p.description }}</p>
+            {% if p.url %}
+              <a class="link" target="_blank" href="{{ p.url }}">Open Project</a>
+            {% endif %}
+          </div>
+        {% empty %}
+          <div class="card">No projects added yet.</div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section reveal">
+      <h2 class="section-title">Contact</h2>
+      <div class="card contact-card lift">
+        <div class="muted">You can contact me using the details below:</div>
+        <div class="contact-lines">
+          {% if bio.email %}<div><b>Email:</b> {{ bio.email }}</div>{% endif %}
+          {% if bio.phone %}<div><b>Phone:</b> {{ bio.phone }}</div>{% endif %}
+          {% if bio.linkedin %}<div><b>LinkedIn:</b> <a target="_blank" href="{{ bio.linkedin }}">{{ bio.linkedin }}</a></div>{% endif %}
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="muted">© {{ bio.name|default:"Portfolio" }}</div>
+    </footer>
+  </main>
+
+  <script src="{% static 'script.js' %}"></script>
+</body>
+</html>
